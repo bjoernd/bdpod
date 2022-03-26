@@ -6,5 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+oauth2 = "4.1"
+url = "*"
 flexi_logger = "0.22.3"
 log = "0.4"
