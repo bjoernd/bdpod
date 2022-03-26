@@ -4,6 +4,10 @@ use std::env;
 extern crate flexi_logger;
 use log::{debug, error, info, warn};
 use std::time::Instant;
+use cynic::{QueryBuilder, http::SurfExt};
+use futures::executor::block_on;
+
+mod cynic_queries;
 
 #[allow(dead_code)] // TODO remove at some point?
 
@@ -39,6 +43,16 @@ fn generate_oauth2_url(client_id: String, client_secret: String) {
         .url();
 
     println!("Please open: {}", goto_url);
+}
+
+async fn get_api_version() {
+    let operation = cynic_queries::queries::APIVersion::build(());
+    debug!("Sending GraphQL request:\n{}", operation.query.to_string());
+    let response = surf::post("https://api.podchaser.com/graphql")
+            .run_graphql(operation)
+            .await
+            .unwrap();
+    info!("{:?}", response.data);
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -84,6 +98,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //let mut token = String::new();
     //io::stdin().read_line(&mut token)?;
     // TODO: find a way that doesn't require copy-pasting magic values on the command line
+
+    block_on(get_api_version());
 
     info!("The end.");
 
