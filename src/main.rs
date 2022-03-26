@@ -1,21 +1,22 @@
 use oauth2::basic::BasicClient;
-use oauth2::{
-    AuthUrl, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenUrl,
-};
+use oauth2::{AuthUrl, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenUrl};
 use std::env;
 extern crate flexi_logger;
-use log::{debug,info,warn,error};
+use log::{debug, error, info, warn};
 use std::time::Instant;
 
 #[allow(dead_code)] // TODO remove at some point?
 
 fn generate_oauth2_url(client_id: String, client_secret: String) {
-    let auth_url = AuthUrl::new("https://www.podchaser.com/do-auth".to_string()).expect("Invalid auth URL");
-    let token_url = TokenUrl::new("https://api.podchaser.com/graphql".to_string()).expect("Invalid token URL");
+    let auth_url =
+        AuthUrl::new("https://www.podchaser.com/do-auth".to_string()).expect("Invalid auth URL");
+    let token_url =
+        TokenUrl::new("https://api.podchaser.com/graphql".to_string()).expect("Invalid token URL");
 
     /* This should redirect to localhost so we could set up a local TCP server to get the redirect request and then parse the auth code.
-       However, podchaser does not support this right now :( */
-    let redirect_url = RedirectUrl::new("https://podchaser.com".to_string()).expect("Invalid redirect URL");
+    However, podchaser does not support this right now :( */
+    let redirect_url =
+        RedirectUrl::new("https://podchaser.com".to_string()).expect("Invalid redirect URL");
 
     let client = BasicClient::new(
         ClientId::new(client_id),
@@ -43,10 +44,12 @@ fn generate_oauth2_url(client_id: String, client_secret: String) {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let start_time = Instant::now();
 
-    flexi_logger::Logger::try_with_str("debug").unwrap()
+    flexi_logger::Logger::try_with_str("debug")
+        .unwrap()
         .log_to_stderr()
         .format(flexi_logger::colored_detailed_format)
-        .start().unwrap();
+        .start()
+        .unwrap();
 
     info!("BDPod starting up.");
 
@@ -81,7 +84,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //let mut token = String::new();
     //io::stdin().read_line(&mut token)?;
     // TODO: find a way that doesn't require copy-pasting magic values on the command line
-
 
     info!("The end.");
 
