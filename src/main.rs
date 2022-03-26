@@ -5,6 +5,7 @@ use oauth2::{
 use std::env;
 extern crate flexi_logger;
 use log::{debug,info,warn,error};
+use std::time::Instant;
 
 #[allow(dead_code)] // TODO remove at some point?
 
@@ -40,6 +41,8 @@ fn generate_oauth2_url(client_id: String, client_secret: String) {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let start_time = Instant::now();
+
     flexi_logger::Logger::try_with_str("debug").unwrap()
         .log_to_stderr()
         .format(flexi_logger::colored_detailed_format)
@@ -81,5 +84,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 
     info!("The end.");
+
+    debug!(
+        "Program finished in {} ms",
+        start_time.elapsed().as_millis()
+    );
+
     Ok(())
 }
