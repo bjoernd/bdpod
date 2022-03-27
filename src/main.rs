@@ -8,19 +8,19 @@ use log::{debug, error, info, warn};
 use std::time::Instant;
 
 mod cynic_queries;
+pub mod app_config;
 
 #[allow(dead_code)] // TODO remove at some point?
-
 fn generate_oauth2_url(client_id: String, client_secret: String) {
     let auth_url =
-        AuthUrl::new("https://www.podchaser.com/do-auth".to_string()).expect("Invalid auth URL");
+        AuthUrl::new(app_config::PODCHASER_AUTH_ENDPOINT.to_string()).expect("Invalid auth URL");
     let token_url =
-        TokenUrl::new("https://api.podchaser.com/graphql".to_string()).expect("Invalid token URL");
+        TokenUrl::new(app_config::PODCHASER_API_ENDPOINT.to_string()).expect("Invalid token URL");
 
     /* This should redirect to localhost so we could set up a local TCP server to get the redirect request and then parse the auth code.
     However, podchaser does not support this right now :( */
     let redirect_url =
-        RedirectUrl::new("https://podchaser.com".to_string()).expect("Invalid redirect URL");
+        RedirectUrl::new(app_config::PODCHASER_REDIRECT_URI.to_string()).expect("Invalid redirect URL");
 
     let client = BasicClient::new(
         ClientId::new(client_id),
@@ -48,7 +48,7 @@ fn generate_oauth2_url(client_id: String, client_secret: String) {
 async fn get_api_version() {
     let operation = cynic_queries::queries::APIVersion::build(());
     debug!("Sending GraphQL request:\n{}", operation.query.to_string());
-    let response = surf::post("https://api.podchaser.com/graphql")
+    let response = surf::post(app_config::PODCHASER_API_ENDPOINT)
         .run_graphql(operation)
         .await
         .unwrap();
