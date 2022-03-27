@@ -3,10 +3,12 @@ use graphql_client::GraphQLQuery;
 use log::{debug, info};
 use std::error::Error;
 
+use reqwest;
+
 #[derive(GraphQLQuery)]
 #[graphql(
     schema_path = "src/graphql/schema.graphql",
-    query_path = "src/graphql/get_api_version.graphql",
+    query_path = "src/graphql/query_api_version.graphql",
     response_derives = "Debug"
 )]
 struct GetAPIVersion;
