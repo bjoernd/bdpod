@@ -2,13 +2,11 @@ use oauth2::basic::BasicClient;
 use oauth2::{AuthUrl, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenUrl};
 use std::env;
 extern crate flexi_logger;
-use cynic::{http::SurfExt, QueryBuilder};
 use futures::executor::block_on;
 use log::{debug, error, info, warn};
 use std::time::Instant;
 
 pub mod app_config;
-mod cynic_queries;
 
 #[allow(dead_code)] // TODO remove at some point?
 fn generate_oauth2_url(client_id: String, client_secret: String) {
@@ -46,13 +44,6 @@ fn generate_oauth2_url(client_id: String, client_secret: String) {
 }
 
 async fn get_api_version() {
-    let operation = cynic_queries::queries::APIVersion::build(());
-    debug!("Sending GraphQL request:\n{}", operation.query.to_string());
-    let response = surf::post(app_config::PODCHASER_API_ENDPOINT)
-        .run_graphql(operation)
-        .await
-        .unwrap();
-    info!("{:?}", response.data);
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
