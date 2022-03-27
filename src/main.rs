@@ -1,12 +1,18 @@
+use graphql_client::GraphQLQuery;
 use oauth2::basic::BasicClient;
 use oauth2::{AuthUrl, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenUrl};
 use std::env;
 extern crate flexi_logger;
-use futures::executor::block_on;
 use log::{debug, error, info, warn};
 use std::time::Instant;
 
+use reqwest;
+use std::error::Error;
+
 pub mod app_config;
+pub mod graphql;
+
+use graphql::query_api_version::query_api_version;
 
 #[allow(dead_code)] // TODO remove at some point?
 fn generate_oauth2_url(client_id: String, client_secret: String) {
@@ -41,9 +47,6 @@ fn generate_oauth2_url(client_id: String, client_secret: String) {
         .url();
 
     println!("Please open: {}", goto_url);
-}
-
-async fn get_api_version() {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -90,7 +93,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //io::stdin().read_line(&mut token)?;
     // TODO: find a way that doesn't require copy-pasting magic values on the command line
 
-    block_on(get_api_version());
+    query_api_version()?;
 
     info!("The end.");
 
