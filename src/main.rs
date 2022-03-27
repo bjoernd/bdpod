@@ -1,13 +1,9 @@
-use graphql_client::GraphQLQuery;
 use oauth2::basic::BasicClient;
 use oauth2::{AuthUrl, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenUrl};
 use std::env;
 extern crate flexi_logger;
-use log::{debug, error, info, warn};
+use log::{debug, info};
 use std::time::Instant;
-
-use reqwest;
-use std::error::Error;
 
 pub mod app_config;
 pub mod graphql;
