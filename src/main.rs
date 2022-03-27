@@ -8,7 +8,7 @@ use std::time::Instant;
 pub mod app_config;
 pub mod graphql;
 
-use graphql::query_api_version::query_api_version;
+use graphql::access_token::access_token;
 
 #[allow(dead_code)] // TODO remove at some point?
 fn generate_oauth2_url(client_id: String, client_secret: String) {
@@ -89,7 +89,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //io::stdin().read_line(&mut token)?;
     // TODO: find a way that doesn't require copy-pasting magic values on the command line
 
-    query_api_version()?;
+    //query_api_version()?;
+    debug!("Getting access token.");
+    let acc_token = access_token(client_id, client_secret)
+        .expect("Unable to get an access token for podchaser.");
+    debug!("Access token: {}", acc_token);
 
     info!("The end.");
 
