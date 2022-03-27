@@ -1,9 +1,9 @@
 use crate::app_config;
 use graphql_client::GraphQLQuery;
 use log::{debug, info};
-use std::error::Error;
-
+use measure_time::info_time;
 use reqwest;
+use std::error::Error;
 
 #[derive(GraphQLQuery)]
 #[graphql(
@@ -14,6 +14,8 @@ use reqwest;
 struct GetAPIVersion;
 
 pub fn query_api_version() -> Result<(), Box<dyn Error>> {
+    info_time!("Timing for query_api_version():");
+
     let request_body = GetAPIVersion::build_query(get_api_version::Variables {});
 
     let client = reqwest::blocking::Client::new();

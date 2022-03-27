@@ -1,6 +1,7 @@
 use crate::app_config;
 use graphql_client::GraphQLQuery;
 use log::error;
+use measure_time::info_time;
 
 use reqwest;
 
@@ -28,9 +29,9 @@ impl fmt::Debug for TokenError {
 }
 
 pub fn access_token(client: String, secret: String) -> Result<String, TokenError> {
-    let request_body = GetAccessToken::build_query(get_access_token::Variables {
-        secret, client,
-    });
+    info_time!("Timing for access_token():");
+
+    let request_body = GetAccessToken::build_query(get_access_token::Variables { secret, client });
 
     let client = reqwest::blocking::Client::new();
 
