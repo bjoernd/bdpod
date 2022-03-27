@@ -7,8 +7,8 @@ use futures::executor::block_on;
 use log::{debug, error, info, warn};
 use std::time::Instant;
 
-mod cynic_queries;
 pub mod app_config;
+mod cynic_queries;
 
 #[allow(dead_code)] // TODO remove at some point?
 fn generate_oauth2_url(client_id: String, client_secret: String) {
@@ -19,8 +19,8 @@ fn generate_oauth2_url(client_id: String, client_secret: String) {
 
     /* This should redirect to localhost so we could set up a local TCP server to get the redirect request and then parse the auth code.
     However, podchaser does not support this right now :( */
-    let redirect_url =
-        RedirectUrl::new(app_config::PODCHASER_REDIRECT_URI.to_string()).expect("Invalid redirect URL");
+    let redirect_url = RedirectUrl::new(app_config::PODCHASER_REDIRECT_URI.to_string())
+        .expect("Invalid redirect URL");
 
     let client = BasicClient::new(
         ClientId::new(client_id),
