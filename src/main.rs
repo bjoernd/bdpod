@@ -2,10 +2,10 @@ use oauth2::basic::BasicClient;
 use oauth2::{AuthUrl, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenUrl};
 use std::env;
 extern crate flexi_logger;
+use cynic::{http::SurfExt, QueryBuilder};
+use futures::executor::block_on;
 use log::{debug, error, info, warn};
 use std::time::Instant;
-use cynic::{QueryBuilder, http::SurfExt};
-use futures::executor::block_on;
 
 mod cynic_queries;
 
@@ -49,9 +49,9 @@ async fn get_api_version() {
     let operation = cynic_queries::queries::APIVersion::build(());
     debug!("Sending GraphQL request:\n{}", operation.query.to_string());
     let response = surf::post("https://api.podchaser.com/graphql")
-            .run_graphql(operation)
-            .await
-            .unwrap();
+        .run_graphql(operation)
+        .await
+        .unwrap();
     info!("{:?}", response.data);
 }
 

@@ -1,9 +1,6 @@
 /* Auto-generated Cynic query structs */
 
-#[cynic::schema_for_derives(
-    file = r#"src/schema.graphql"#,
-    module = "schema",
-)]
+#[cynic::schema_for_derives(file = r#"src/schema.graphql"#, module = "schema")]
 pub mod queries {
     use super::schema;
 
@@ -12,7 +9,6 @@ pub mod queries {
     pub struct APIVersion {
         pub api_version: String,
     }
-
 }
 
 pub mod schema {
