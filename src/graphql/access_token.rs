@@ -137,10 +137,10 @@ pub fn access_token(client: String, secret: String) -> Result<String, TokenRetri
         res.unwrap().json().unwrap();
 
     match response_body.data.unwrap().request_access_token {
-        Some(o) => {
-            cache_token(o.access_token.clone());
-            Ok(o.access_token)
-        }
+        Some(o) => match cache_token(o.access_token.clone()) {
+            Ok(_) => Ok(o.access_token),
+            Err(_) => Err(TokenRetrieveError),
+        },
         None => {
             for e in response_body.errors.unwrap() {
                 error!("GraphQL Error: {:?}", e);
