@@ -13,5 +13,7 @@ log = "0.4"
 futures = "0.3"
 graphql_client = "0.10"
 serde = "^1.0"
+serde_json = "1.0"
 reqwest = { version = "^0.11", features = ["json", "blocking"] }
 measure_time = "0.8"
+chrono = "0.4"

@@ -91,9 +91,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //query_api_version()?;
     debug!("Getting access token.");
-    let acc_token = access_token(client_id, client_secret)
+    let access_token = access_token(client_id, client_secret)
         .expect("Unable to get an access token for podchaser.");
-    debug!("Access token: {}", acc_token);
+    debug!("Access token: {}", access_token);
 
     info!("The end.");
 
