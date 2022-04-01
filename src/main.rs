@@ -3,7 +3,7 @@ use oauth2::{AuthUrl, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, Tok
 use std::env;
 extern crate flexi_logger;
 use log::{debug, info};
-use std::time::Instant;
+use measure_time::info_time;
 
 pub mod app_config;
 pub mod graphql;
@@ -46,14 +46,14 @@ fn generate_oauth2_url(client_id: String, client_secret: String) {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let start_time = Instant::now();
-
     flexi_logger::Logger::try_with_str("debug")
         .unwrap()
         .log_to_stderr()
         .format(flexi_logger::colored_detailed_format)
         .start()
         .unwrap();
+
+    info_time!("main()");
 
     info!("BDPod starting up.");
 
@@ -96,11 +96,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     debug!("Access token: {}", access_token);
 
     info!("The end.");
-
-    debug!(
-        "Program finished in {} ms",
-        start_time.elapsed().as_millis()
-    );
 
     Ok(())
 }

@@ -46,7 +46,7 @@ struct CachedAccessToken {
 const CACHE_FILE: &str = "podchaser_access_token.json";
 
 fn cache_token(token: String) -> Result<(), std::io::Error> {
-    info_time!("Timing for cache_token():");
+    info_time!("cache_token()");
 
     let timestamp = Utc::now();
 
@@ -106,7 +106,7 @@ fn read_cached_token() -> Result<String, CacheError> {
 }
 
 pub fn access_token(client: String, secret: String) -> Result<String, TokenRetrieveError> {
-    info_time!("Timing for access_token():");
+    info_time!("access_token()");
 
     let cached = read_cached_token();
     match cached {
